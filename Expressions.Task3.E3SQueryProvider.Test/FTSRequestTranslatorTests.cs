@@ -8,23 +8,21 @@ namespace Expressions.Task3.E3SQueryProvider.Test
 {
     public class FtsRequestTranslatorTests
     {
-        #region SubTask 1 : operands order
-
+        // SubTask 1 : operands order
         [Fact]
         public void TestBinaryBackOrder()
         {
             var translator = new ExpressionToFtsRequestTranslator();
+#pragma warning disable SA1131 // Use readable conditions
             Expression<Func<EmployeeEntity, bool>> expression
                 = employee => "EPRUIZHW006" == employee.Workstation;
+#pragma warning restore SA1131 // Use readable conditions
 
             string translated = translator.Translate(expression);
             Assert.Equal("Workstation:(EPRUIZHW006)", translated);
         }
 
-        #endregion
-
-        #region SubTask 2: inclusion operations
-
+        // SubTask 2: inclusion operations
         [Fact]
         public void TestBinaryEqualsQueryable()
         {
@@ -64,7 +62,7 @@ namespace Expressions.Task3.E3SQueryProvider.Test
             var translator = new ExpressionToFtsRequestTranslator();
             Expression<Func<EmployeeEntity, bool>> expression
                 = employee => employee.Workstation.StartsWith("EPRUIZHW006");
-            
+
             string translated = translator.Translate(expression);
             Assert.Equal("Workstation:(EPRUIZHW006*)", translated);
         }
@@ -90,7 +88,5 @@ namespace Expressions.Task3.E3SQueryProvider.Test
             string translated = translator.Translate(expression);
             Assert.Equal("Workstation:(*IZHW006*)", translated);
         }
-
-        #endregion
     }
 }

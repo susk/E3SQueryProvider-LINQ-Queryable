@@ -9,7 +9,9 @@ namespace Expressions.Task3.E3SQueryProvider.Helpers
         {
             Type iEnum = FindIEnumerable(seqType);
             if (iEnum == null)
+            {
                 return seqType;
+            }
 
             return iEnum.GetGenericArguments()[0];
 
@@ -18,10 +20,14 @@ namespace Expressions.Task3.E3SQueryProvider.Helpers
         private static Type FindIEnumerable(Type seqType)
         {
             if (seqType == null || seqType == typeof(string))
+            {
                 return null;
+            }
 
             if (seqType.IsArray)
+            {
                 return typeof(IEnumerable<>).MakeGenericType(seqType.GetElementType());
+            }
 
             if (seqType.IsGenericType)
             {
@@ -29,7 +35,9 @@ namespace Expressions.Task3.E3SQueryProvider.Helpers
                 {
                     Type iEnum = typeof(IEnumerable<>).MakeGenericType(arg);
                     if (iEnum.IsAssignableFrom(seqType))
+                    {
                         return iEnum;
+                    }
                 }
             }
 
@@ -41,7 +49,9 @@ namespace Expressions.Task3.E3SQueryProvider.Helpers
                 {
                     Type iEnum = FindIEnumerable(iFace);
                     if (iEnum != null)
+                    {
                         return iEnum;
+                    }
                 }
 
             }

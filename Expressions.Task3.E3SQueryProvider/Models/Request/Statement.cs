@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 namespace Expressions.Task3.E3SQueryProvider.Models.Request
 {
     [JsonObject]

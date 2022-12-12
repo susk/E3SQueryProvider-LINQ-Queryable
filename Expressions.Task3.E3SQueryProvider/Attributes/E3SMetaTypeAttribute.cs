@@ -9,7 +9,7 @@ namespace Expressions.Task3.E3SQueryProvider.Attributes
 
         public E3SMetaTypeAttribute(string name)
         {
-            Name = name;
+            this.Name = name;
         }
     }
 }

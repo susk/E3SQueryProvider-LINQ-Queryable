@@ -13,7 +13,7 @@ namespace Expressions.Task3.E3SQueryProvider.Helpers
                 new HttpClientHandler
                 {
                     AllowAutoRedirect = true,
-                    PreAuthenticate = true
+                    PreAuthenticate = true,
                 });
 
             var encoding = new ASCIIEncoding();

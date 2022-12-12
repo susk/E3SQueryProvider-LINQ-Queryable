@@ -1,18 +1,18 @@
-﻿using Expressions.Task3.E3SQueryProvider.Helpers;
-using Expressions.Task3.E3SQueryProvider.Services;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Expressions.Task3.E3SQueryProvider.Helpers;
+using Expressions.Task3.E3SQueryProvider.Services;
 
 namespace Expressions.Task3.E3SQueryProvider.QueryProvider
 {
     public class E3SLinqProvider : IQueryProvider
     {
-        private readonly E3SSearchService _e3SClient;
+        private readonly E3SSearchService e3SClient;
 
         public E3SLinqProvider(E3SSearchService client)
         {
-            _e3SClient = client;
+            this.e3SClient = client;
         }
 
         public IQueryable CreateQuery(Expression expression)
@@ -37,7 +37,7 @@ namespace Expressions.Task3.E3SQueryProvider.QueryProvider
             var translator = new ExpressionToFtsRequestTranslator();
             string queryString = translator.Translate(expression);
 
-            return (TResult)_e3SClient.SearchFts(itemType, queryString);
+            return (TResult)this.e3SClient.SearchFts(itemType, queryString);
         }
     }
 }

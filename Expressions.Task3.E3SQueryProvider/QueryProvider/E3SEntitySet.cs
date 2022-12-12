@@ -1,16 +1,23 @@
-﻿using Expressions.Task3.E3SQueryProvider.Services;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Expressions.Task3.E3SQueryProvider.Models.Entities;
+using Expressions.Task3.E3SQueryProvider.Services;
 
 namespace Expressions.Task3.E3SQueryProvider.QueryProvider
 {
-    public class E3SEntitySet<T> : IQueryable<T> where T : BaseE3SEntity
+    public class E3SEntitySet<T> : IQueryable<T>
+        where T : BaseE3SEntity
     {
         protected readonly Expression Expr;
+
+        public E3SEntitySet(Expression expr)
+        {
+            Expr = expr;
+        }
+
         protected readonly IQueryProvider QueryProvider;
 
         public E3SEntitySet(E3SSearchService client)
@@ -24,17 +31,11 @@ namespace Expressions.Task3.E3SQueryProvider.QueryProvider
             QueryProvider = new E3SLinqProvider(client);
         }
 
-        #region public properties
-
         public Type ElementType => typeof(T);
 
         public Expression Expression => Expr;
 
         public IQueryProvider Provider => QueryProvider;
-
-        #endregion
-
-        #region public methods
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -45,7 +46,5 @@ namespace Expressions.Task3.E3SQueryProvider.QueryProvider
         {
             return QueryProvider.Execute<IEnumerable>(Expr).GetEnumerator();
         }
-
-        #endregion
     }
 }

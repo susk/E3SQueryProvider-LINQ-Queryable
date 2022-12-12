@@ -17,29 +17,29 @@ namespace Expressions.Task3.E3SQueryProvider.Test.Ignored
     /// </summary>
     public class E3SProviderTests
     {
-        #region private 
+        #region private
 
-        private readonly ITestOutputHelper _testOutputHelper;
-
-        private static IConfigurationRoot config = new ConfigurationBuilder()
+        private static IConfigurationRoot Config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build();
 
-        private static string User = config["api:user"];
-        private static string Password = config["api:password"];
-        private static string BaseUrl = config["api:apiBaseUrl"];
-
-        private static readonly Lazy<E3SSearchService> searchService = new Lazy<E3SSearchService>(() =>
+        private static readonly Lazy<E3SSearchService> SearchService = new Lazy<E3SSearchService>(() =>
         {
-            HttpClient httpClient = HttpClientHelper.CreateClient(User, Password);
-            return new E3SSearchService(httpClient, BaseUrl);
+            HttpClient httpClient = HttpClientHelper.CreateClient(user, password);
+            return new E3SSearchService(httpClient, baseUrl);
         });
+
+        private static string user = Config["api:user"];
+        private static string password = Config["api:password"];
+        private static string baseUrl = Config["api:apiBaseUrl"];
+
+        private readonly ITestOutputHelper testOutputHelper;
 
         #endregion
 
         public E3SProviderTests(ITestOutputHelper testOutputHelper)
         {
-            _testOutputHelper = testOutputHelper;
+            this.testOutputHelper = testOutputHelper;
         }
 
         #region public tests
@@ -47,33 +47,33 @@ namespace Expressions.Task3.E3SQueryProvider.Test.Ignored
         [Fact(Skip = "This test is provided to show the general idea of usage.")]
         public void WithoutProvider()
         {
-            IEnumerable<EmployeeEntity> res = searchService.Value.SearchFts<EmployeeEntity>("workstation:(EPRUIZHW0249)", 0, 1);
+            IEnumerable<EmployeeEntity> res = SearchService.Value.SearchFts<EmployeeEntity>("workstation:(EPRUIZHW0249)", 0, 1);
 
             foreach (var emp in res)
             {
-                _testOutputHelper.WriteLine("{0} {1}", emp.NativeName, emp.StartWorkDate);
+                testOutputHelper.WriteLine("{0} {1}", emp.NativeName, emp.StartWorkDate);
             }
         }
 
         [Fact(Skip = "This test is provided to show the general idea of usage.")]
         public void WithoutProviderNonGeneric()
         {
-            var res = searchService.Value.SearchFts(typeof(EmployeeEntity), "workstation:(EPRUIZHW0249)", 0, 10);
+            var res = SearchService.Value.SearchFts(typeof(EmployeeEntity), "workstation:(EPRUIZHW0249)", 0, 10);
 
             foreach (var emp in res.OfType<EmployeeEntity>())
             {
-                _testOutputHelper.WriteLine("{0} {1}", emp.NativeName, emp.StartWorkDate);
+                testOutputHelper.WriteLine("{0} {1}", emp.NativeName, emp.StartWorkDate);
             }
         }
 
         [Fact(Skip = "This test is provided to show the general idea of usage.")]
         public void WithProvider()
         {
-            var employees = new E3SEntitySet<EmployeeEntity>(searchService.Value);
+            var employees = new E3SEntitySet<EmployeeEntity>(SearchService.Value);
 
             foreach (var emp in employees.Where(e => e.Workstation == "EPRUIZHW0249"))
             {
-                _testOutputHelper.WriteLine("{0} {1}", emp.NativeName, emp.StartWorkDate);
+                testOutputHelper.WriteLine("{0} {1}", emp.NativeName, emp.StartWorkDate);
             }
         }
 
